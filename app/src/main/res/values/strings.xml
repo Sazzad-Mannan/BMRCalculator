@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Basal Metabolic Rate Calculator</string>
+    <string name="string1"><u>Life Style</u></string>
+    <string name="string2"><u>Calories</u></string>
+    <string name="height">Height :</string>
+    <string name="weight">Weight :</string>
+    <string name="age">Age :</string>
+    <string name="gender">Gender :</string>
+    <string name="calculate">Calculate</string>
+    <string name="your">Your Basal Metabolic Rate is:</string>
+    <string name="daily">Daily calories needs based on life style :</string>
+    <string name="l1">Little or no exercise :</string>
+    <string name="l2">Exercise 1–3 times/week :</string>
+    <string name="l3">Exercise 4–5 times/week :</string>
+    <string name="l4">Daily exercise :</string>
+    <string name="l5">Intense exercise 6–7 times/week :</string>
+    <string name="l6">Very intense exercise daily :</string>
+    <string name="how"><u>How it calculate?</u></string>
+    <string name="des">The basal metabolic rate (BMR) is the amount of energy needed while resting in a temperate environment when the digestive system is inactive. It is the equivalent of figuring out how much gas an idle car consumes while parked. In such a state, energy will be used only to maintain vital organs, which include the heart, brain, kidneys, nervous system, intestines, liver, lungs, sex organs, muscles, and skin. For most people, upwards of ~70% of total energy (calories) burned each day is due to upkeep. Physical activity makes up ~20% of expenditure and ~10% is used for the digestion of food, also known as thermogenesis.\n\n
+<b>Mifflin-St Jeor Equation:</b>\n
+For men:\n
+BMR = 10W + 6.25H - 5A + 5\n\n
+For women:\n
+BMR = 10W + 6.25H - 5A - 161\n</string>
+</resources>
