@@ -1,10 +1,15 @@
 package com.riftech.bmrcalculator;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -15,6 +20,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,10 +29,13 @@ public class MainActivity extends AppCompatActivity {
     String h_unit,w_unit,gender;
     double height,weight,bmr,age;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
 
         Button button=(Button)findViewById(R.id.button);
@@ -130,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 //create a list of items for the spinner.
         String[] items = new String[]{"ft", "cm"};
         String[] items1 = new String[]{"kg", "lbs"};
-        String[] items2 = new String[]{"Female", "Male"};
+        String[] items2 = new String[]{"Male", "Female"};
 
 
 //create an adapter to describe how the items are displayed, adapters are used in several places in android.
@@ -145,4 +155,41 @@ public class MainActivity extends AppCompatActivity {
         dropdown2.setAdapter(adapter2);
 
     }
+
+    // create an action bar button
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // R.menu.mymenu is a reference to an xml file named mymenu.xml which should be inside your res/menu directory.
+        // If you don't have res/menu, just create a directory named "menu" inside res
+        getMenuInflater().inflate(R.menu.change, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle button activities
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_share) {
+            // do something here
+            // single item array instance to store which element is selected by user initially
+            // it should be set to zero meaning none of the element is selected by default
+            try {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "BMR Calculator");
+                String shareMessage= "\nLet me recommend you this application\n\n";
+                shareMessage = shareMessage + "https://play.google.com/store/apps/details?id=" + getApplicationContext().getPackageName() +"\n\n";
+                shareIntent.putExtra(Intent.EXTRA_TEXT, shareMessage);
+                startActivity(Intent.createChooser(shareIntent, "choose one"));
+            } catch(Exception e) {
+                //e.toString();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+
 }
