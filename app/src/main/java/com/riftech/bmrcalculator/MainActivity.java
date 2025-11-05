@@ -2,6 +2,7 @@ package com.riftech.bmrcalculator;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,10 +23,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.play.core.appupdate.AppUpdateInfo;
+import com.google.android.play.core.appupdate.AppUpdateManager;
+import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
+import com.google.android.play.core.install.model.AppUpdateType;
+import com.google.android.play.core.install.model.InstallStatus;
+import com.google.android.play.core.install.model.UpdateAvailability;
 
 import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
+    private static final int UPDATE_REQUEST_CODE = 123;
+    private AppUpdateManager appUpdateManager;
 
     String h_unit,w_unit,gender;
     double height,weight,bmr,age;
@@ -37,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         Button button=(Button)findViewById(R.id.button);
         Spinner dropdown = findViewById(R.id.spinner9);
@@ -53,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
         txt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                button.setVisibility(View.INVISIBLE);
+//                button.setVisibility(View.INVISIBLE);
                 pgbar.setVisibility(View.VISIBLE);
                 Intent intent = new Intent(MainActivity.this, MainActivity3.class);
                 new Handler().postDelayed(new Runnable() {
@@ -69,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
                         //main.setVisibility(View.VISIBLE);
                     }
-                }, 6000);
+                }, 2000);
 
             }
         });
@@ -78,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
+
+                // Hide keyboard when user taps calculate
+                hideKeyboard(view);
+
                 // click handling code
                 h_unit = dropdown.getSelectedItem().toString();
                 w_unit = dropdown1.getSelectedItem().toString();
@@ -156,6 +173,61 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Always check for updates when user returns to the app
+        checkForUpdate();
+    }
+
+    private void checkForUpdate() {
+        appUpdateManager = AppUpdateManagerFactory.create(this);
+
+        Task<AppUpdateInfo> appUpdateInfoTask = appUpdateManager.getAppUpdateInfo();
+
+        appUpdateInfoTask.addOnSuccessListener(appUpdateInfo -> {
+            if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
+                    && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.FLEXIBLE)) {
+
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo,
+                            AppUpdateType.FLEXIBLE,
+                            this,
+                            UPDATE_REQUEST_CODE
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else if (appUpdateInfo.installStatus() == InstallStatus.DOWNLOADED) {
+                // Update is downloaded but not installed
+                showCompleteUpdateSnackbar();
+            }
+        });
+    }
+
+    private void showCompleteUpdateSnackbar() {
+        Snackbar snackbar = Snackbar.make(
+                findViewById(android.R.id.content),
+                "Update ready! Restart to apply.",
+                Snackbar.LENGTH_INDEFINITE
+        );
+        snackbar.setAction("Restart", view -> appUpdateManager.completeUpdate());
+        snackbar.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == UPDATE_REQUEST_CODE) {
+            if (resultCode != RESULT_OK) {
+                Toast.makeText(this, "Update canceled. You will be reminded again.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     // create an action bar button
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -190,6 +262,12 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void hideKeyboard(View view) {
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
 
 
 }

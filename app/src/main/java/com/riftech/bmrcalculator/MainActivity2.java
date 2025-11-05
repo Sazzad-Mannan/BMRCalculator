@@ -36,7 +36,7 @@ public class MainActivity2 extends AppCompatActivity {
         }else{
            // img.setImageResource(R.drawable.bfpf);
         }
-        txt1.setText(String.valueOf(Math.round(bfp))+"cal/day");
+        txt1.setText(String.valueOf(Math.round(bfp))+" Cal/day");
         txt2.setText(String.valueOf(Math.round(bfp*1.2)));
         txt3.setText(String.valueOf(Math.round(bfp*1.375)));;
         txt4.setText(String.valueOf(Math.round(bfp*1.46)));;

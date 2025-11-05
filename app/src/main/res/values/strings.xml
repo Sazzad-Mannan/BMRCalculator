@@ -17,7 +17,8 @@
     <string name="l5">Intense exercise 6–7 times/week :</string>
     <string name="l6">Very intense exercise daily :</string>
     <string name="how"><u>How it calculate?</u></string>
-    <string name="des">The basal metabolic rate (BMR) is the amount of energy needed while resting in a temperate environment when the digestive system is inactive. It is the equivalent of figuring out how much gas an idle car consumes while parked. In such a state, energy will be used only to maintain vital organs, which include the heart, brain, kidneys, nervous system, intestines, liver, lungs, sex organs, muscles, and skin. For most people, upwards of ~70% of total energy (calories) burned each day is due to upkeep. Physical activity makes up ~20% of expenditure and ~10% is used for the digestion of food, also known as thermogenesis.\n\n
+    <string name="des">The basal metabolic rate (BMR) represents the amount of energy your body requires while at rest in a neutral environment, with the digestive system inactive. Think of it like the fuel an idle car consumes while parked. In this state, energy is used solely to maintain vital organs, including the heart, brain, kidneys, nervous system, intestines, liver, lungs, reproductive organs, muscles, and skin. For most people, approximately 70% of daily energy expenditure comes from this basic upkeep. Physical activity accounts for about 20%, and around 10% is used for digesting food, known as thermogenesis.
+        \n\n
 <b>Mifflin-St Jeor Equation:</b>\n
 For men:\n
 BMR = 10W + 6.25H - 5A + 5\n\n
